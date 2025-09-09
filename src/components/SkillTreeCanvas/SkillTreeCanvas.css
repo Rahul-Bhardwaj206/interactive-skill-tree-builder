@@ -1,0 +1,155 @@
+.skill-tree-canvas {
+  height: 600px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+}
+
+.skill-tree-viewport {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.react-flow-canvas {
+  background: #f9fafb;
+  width: 100%;
+  height: 100%;
+}
+
+/* React Flow custom styles */
+.react-flow__node-default {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.react-flow__edge-default {
+  stroke: #6b7280;
+  stroke-width: 2;
+}
+
+.react-flow__edge-selected {
+  stroke: #3b82f6;
+}
+
+.react-flow__connectionline {
+  stroke: #3b82f6;
+  stroke-width: 2;
+  stroke-dasharray: 5, 5;
+}
+
+.react-flow__controls {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__controls-button {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.15s ease;
+}
+
+.react-flow__controls-button:hover {
+  background: #f3f4f6;
+}
+
+.react-flow__minimap {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Empty state */
+.empty-state {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.empty-state-content {
+  text-align: center;
+  max-width: 400px;
+  padding: 40px 20px;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-state-content h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.empty-state-content p {
+  margin: 0 0 24px 0;
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.empty-state-hint {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: left;
+}
+
+.empty-state-hint strong {
+  color: #374151;
+  font-size: 14px;
+}
+
+.empty-state-hint ul {
+  margin: 8px 0 0 0;
+  padding-left: 16px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.empty-state-hint li {
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .skill-tree-canvas {
+    height: 500px;
+  }
+
+  .empty-state-content {
+    padding: 20px 16px;
+  }
+
+  .empty-state-icon {
+    font-size: 40px;
+  }
+
+  .empty-state-content h3 {
+    font-size: 18px;
+  }
+
+  .empty-state-content p {
+    font-size: 14px;
+  }
+}
