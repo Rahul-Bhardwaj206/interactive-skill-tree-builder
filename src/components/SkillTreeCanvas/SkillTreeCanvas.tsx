@@ -137,7 +137,14 @@ export const SkillTreeCanvas: React.FC<SkillTreeCanvasProps> = ({
               <div className="empty-state-hint">
                 <strong>Getting Started:</strong>
                 <ul>
-                  <li>Add skills using the "Add Skill" button</li>
+                  <li>
+                    Use the <strong>"Load Sample"</strong> button to quickly
+                    start with a pre-build skill tree
+                  </li>
+                  <li>
+                    Or add your own skills using the{' '}
+                    <strong>"Add Skill"</strong> button
+                  </li>
                   <li>
                     Drag from the bottom handle of one skill to the top of
                     another to create prerequisites

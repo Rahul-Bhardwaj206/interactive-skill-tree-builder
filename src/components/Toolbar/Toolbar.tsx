@@ -5,6 +5,7 @@ interface ToolbarProps {
   id?: string;
   onAddSkill: () => void;
   onClearAll: () => void;
+  onLoadSample?: () => void;
   skillCount: number;
 }
 
@@ -12,6 +13,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   id,
   onAddSkill,
   onClearAll,
+  onLoadSample,
   skillCount,
 }) => {
   return (
@@ -49,6 +51,20 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               Open dialog to create a new skill
             </span>
           </button>
+
+          {skillCount === 0 && onLoadSample && (
+            <button
+              type="button"
+              onClick={onLoadSample}
+              className="btn btn-secondary"
+              aria-describedby="load-sample-help"
+            >
+              <span aria-hidden="true">📂</span> Load Sample
+              <span id="load-sample-help" className="sr-only">
+                Load a sample skill tree to get started quickly
+              </span>
+            </button>
+          )}
 
           {skillCount > 0 && (
             <button

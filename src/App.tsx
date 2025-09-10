@@ -25,6 +25,7 @@ function App() {
     toggleSkillCompletion,
     deleteSkill,
     clearSkillTree,
+    loadSampleSkillTree,
     isLoaded,
   } = useSkillTree();
 
@@ -45,22 +46,8 @@ function App() {
     skillCount: nodes.length,
   });
 
-  const handleAddSkillClick = () => {
-    setIsAddSkillFormOpen(true);
-  };
-
   const handleCloseAddSkillForm = () => {
     setIsAddSkillFormOpen(false);
-  };
-
-  const handleClearAll = () => {
-    if (
-      window.confirm(
-        'Are you sure you want to clear all skills? This action cannot be undone.'
-      )
-    ) {
-      clearSkillTree();
-    }
   };
 
   if (!isLoaded) {
@@ -79,9 +66,18 @@ function App() {
 
       <div className="app-container">
         <Toolbar
-          id="toolbar-actions"
-          onAddSkill={handleAddSkillClick}
-          onClearAll={handleClearAll}
+          id="main-toolbar"
+          onAddSkill={() => setIsAddSkillFormOpen(true)}
+          onClearAll={() => {
+            if (
+              window.confirm(
+                'Are you sure you want to clear all skills? This action cannot be undone.'
+              )
+            ) {
+              clearSkillTree();
+            }
+          }}
+          onLoadSample={loadSampleSkillTree}
           skillCount={nodes.length}
         />
 

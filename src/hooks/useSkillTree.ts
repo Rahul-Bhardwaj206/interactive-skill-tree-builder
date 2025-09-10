@@ -23,6 +23,7 @@ import {
 } from '../utils/skillTree.utils';
 import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
+import { createSampleSkillTree } from '../utils/sampleData.utils';
 
 const INITIAL_NODES: SkillNode[] = [];
 const INITIAL_EDGES: SkillEdge[] = [];
@@ -126,17 +127,24 @@ export const useSkillTree = () => {
         // If a skill was marked incomplete, also mark dependent skills incomplete
         const toggleNode = updatedNodes.find((node) => node.id === skillId);
         if (toggleNode && !toggleNode.data.isCompleted) {
-          const dependentSkillIds = edges
-            .filter((edge) => edge.source === skillId)
-            .map((edge) => edge.target);
-          if (dependentSkillIds.length > 0) {
+          const allDependentSkillIds = new Set<string>();
+          const collectDependents = (id: string) => {
+            const directDependents = edges
+              .filter((edge) => edge.source === id)
+              .map((edge) => edge.target);
+            directDependents.forEach((depId) => {
+              if (!allDependentSkillIds.has(depId)) {
+                allDependentSkillIds.add(depId);
+                collectDependents(depId);
+              }
+            });
+          };
+          collectDependents(skillId);
+          if (allDependentSkillIds.size > 0) {
             updatedNodes = updatedNodes.map((node) => {
-              if (
-                dependentSkillIds.includes(node.id) &&
-                node.data.isCompleted
-              ) {
+              if (allDependentSkillIds.has(node.id) && node.data.isCompleted) {
                 toast(
-                  `${node.data.name} has been reset because a prerequisite was marked as incomplete.`
+                  `${node.data.name} has been reset because a prerequisite in its path was marked as incomplete.`
                 );
                 return {
                   ...node,
@@ -245,6 +253,16 @@ export const useSkillTree = () => {
     toast.success('Skill tree cleared!');
   }, [setNodes, setEdges]);
 
+  // Load sample skill tree
+  const loadSampleSkillTree = useCallback(() => {
+    const { nodes: sampleNodes, edges: sampleEdges } = createSampleSkillTree();
+    const unlockedNodes = updateSkillUnlockStatus(sampleNodes, sampleEdges);
+
+    setNodes(unlockedNodes);
+    setEdges(sampleEdges);
+    toast.success('Sample skill tree loaded!');
+  }, [setNodes, setEdges]);
+
   return {
     nodes,
     edges,
@@ -255,6 +273,7 @@ export const useSkillTree = () => {
     toggleSkillCompletion,
     deleteSkill,
     clearSkillTree,
+    loadSampleSkillTree,
     isLoaded,
   };
 };
