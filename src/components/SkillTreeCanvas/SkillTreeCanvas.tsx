@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import {
   ReactFlow,
   Background,
@@ -11,29 +11,16 @@ import {
   type Connection,
   type DefaultEdgeOptions,
 } from '@xyflow/react';
-import { SkillNode } from '../SkillNode/SkillNode';
 import type {
   SkillNode as SkillNodeType,
   SkillEdge,
 } from '../../types/skill.types';
 import './SkillTreeCanvas.css';
+import { SkillNode } from '../SkillNode/SkillNode';
 
-// Node types factory function
-const createNodeTypes = (
-  highlightedNodeIds: Set<string>,
-  onToggleCompletion: (skillId: string) => void,
-  onDeleteSkill: (skillId: string) => void
-): NodeTypes => ({
-  default: (props) => (
-    <SkillNode
-      {...props}
-      isHighlighted={highlightedNodeIds.has(props.id)}
-      onToggleCompletion={onToggleCompletion}
-      onDelete={onDeleteSkill}
-    />
-  ),
-});
-
+const nodeTypes: NodeTypes ={
+  default: SkillNode
+} 
 interface SkillTreeCanvasProps {
   id?: string;
   nodes: SkillNodeType[];
@@ -71,12 +58,16 @@ export const SkillTreeCanvas: React.FC<SkillTreeCanvasProps> = ({
   onDeleteSkill,
   highlightedNodeIds,
 }) => {
-  // Create memoized node types using the factory
-  const nodeTypes = useMemo(
-    () =>
-      createNodeTypes(highlightedNodeIds, onToggleCompletion, onDeleteSkill),
-    [highlightedNodeIds, onToggleCompletion, onDeleteSkill]
-  );
+  
+  const transformedNodes = nodes.map((node) => ({
+    ...node,
+    data: {
+      ...node.data,
+      isHighlighted: highlightedNodeIds.has(node.id),
+      onToggleCompletion,
+      onDelete: onDeleteSkill,
+    },
+  }));
 
   // Custom minimap node color function
   const getNodeColor = useCallback((node: SkillNodeType) => {
@@ -99,7 +90,7 @@ export const SkillTreeCanvas: React.FC<SkillTreeCanvasProps> = ({
           points to create prerequisites.
         </div>
         <ReactFlow
-          nodes={nodes}
+          nodes={transformedNodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}

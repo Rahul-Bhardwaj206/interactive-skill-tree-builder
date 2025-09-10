@@ -2,21 +2,28 @@ import { Handle, Position, type NodeProps } from '@xyflow/react';
 import type { SkillData } from '../../types/skill.types';
 import './SkillNode.css';
 
-interface SkillNodeProps extends NodeProps {
+interface SkillNodeData extends SkillData {
   data: SkillData;
   isHighlighted?: boolean;
   onToggleCompletion?: (skillId: string) => void;
   onDelete?: (skillId: string) => void;
 }
 
-export const SkillNode: React.FC<SkillNodeProps> = ({
-  data,
-  id,
-  isHighlighted = false,
-  onToggleCompletion,
-  onDelete,
-}) => {
-  const { description, isCompleted, isUnlocked, level, name } = data;
+interface SkillNodeProps extends NodeProps {
+  data: SkillNodeData;
+}
+
+export const SkillNode: React.FC<SkillNodeProps> = ({ data, id }) => {
+  const {
+    description,
+    isCompleted,
+    isUnlocked,
+    level,
+    name,
+    isHighlighted = false,
+    onToggleCompletion,
+    onDelete,
+  } = data;
   const handleToggleCompletion = () => {
     onToggleCompletion?.(id);
   };
