@@ -1,6 +1,6 @@
 # Interactive Skill Tree Builder
 
-A React-based interactive skill tree builder that allows users to create, manage, and visualize skill progression trees. Built with TypeScript, Vite, and @xyflow/react for fluid, interactive node-based visualizations.
+A React-based interactive skill tree builder that allows users to create, manage, and visualize skill progression trees. Built with TypeScript, Vite, and @xyflow/react for fluid, interactive node-based visualizations.A web application that allows users to create and navigate a personalized skill tree. Users can add skills as nodes, connect them with prerequisite skills, and interact with the tree to "unlock" skills based on completion logic. The application features a sample tree for quick start and intelligent dependency management that cascades completion states through the skill hierarchy.
 
 ## Features
 
@@ -12,11 +12,17 @@ A React-based interactive skill tree builder that allows users to create, manage
   - Automatic layout with node fitting
 
 - 🔄 Skill Management
-  - Add new skills with name, description, and level
+  - Add new skills with name, description, cost, and level
   - Set skill prerequisites through node connections
   - Mark skills as completed or incomplete
   - Delete skills with proper cleanup
   - Three-tier skill levels (Beginner, Intermediate, Advanced)
+
+- 🔌 Extension Features
+  - Validate connections to prevent circular dependencies with user feedback
+  - Search bar to filter nodes by name with highlighting
+  - Pre-build sample skill tree with arranged layout for quick start
+  - Recursive dependency tracking to reset all downstream skills when prerequisites change
 
 - 🔍 Search and Filter
   - Search skills by name and description
@@ -83,6 +89,12 @@ The application will be available at `http://localhost:5173`
 
 ## Usage Guide
 
+### Getting Started
+
+1. For a quick start, use the "Load Sample" button when the canvas is empty
+2. This will create a pre-arranged skill tree with a web development learning path
+3. Explore the tree to understand how prerequisite and completion work
+
 ### Adding Skills
 
 1. Click the "Add Skill" button in the toolbar
@@ -101,6 +113,7 @@ The application will be available at `http://localhost:5173`
 1. Skills with no prerequisites start as "Available"
 2. Click the "Complete Skill" button on available skills
 3. Dependent skills become available as their prerequisites are completed
+4. Marking a prerequisite as incomplete will automatically reset all dependent skill at all level down the tree
 
 ### Search and Navigation
 
