@@ -65,6 +65,7 @@ npm install
 ```bash
 npm run dev
 ```
+
 The application will be available at `http://localhost:5173`
 
 4. Run tests
@@ -81,6 +82,7 @@ The application will be available at `http://localhost:5173`
 ```
 
 5. Build the application
+
 ```bash
   npm run build
 ```
@@ -114,7 +116,7 @@ The application will be available at `http://localhost:5173`
 
 ## Project Structure
 
-
+```
 src/
 ├── components/          # React components
 │   ├── AddSkillForm/   # Modal form for adding skills
@@ -130,7 +132,7 @@ src/
 │   ├── skillTree.utils.ts # Graph logic and validation
 │   └── storage.utils.ts   # localStorage operations
 └── test/               # Unit tests
-
+```
 
 ## Architecture Decisions
 
@@ -160,15 +162,15 @@ src/
 
 ## Testing Strategy
 
-- *Unit Tests*: Core utility functions and hooks
-- *Component Tests*: UI behavior and user interactions
-- *Integration Tests*: End-to-end workflows
-- *Coverage*: Key business logic and user paths
+- _Unit Tests_: Core utility functions and hooks
+- _Component Tests_: UI behavior and user interactions
+- _Integration Tests_: End-to-end workflows
+- _Coverage_: Key business logic and user paths
 
 ## Completed Bonuses
 
-1. *Cycle Prevention*: Implemented with DFS algorithm and user feedback
-2. *Search and Filter*: Real-time search with node highlighting
+1. _Cycle Prevention_: Implemented with DFS algorithm and user feedback
+2. _Search and Filter_: Real-time search with node highlighting
 
 ## AI Tool Usage Disclosure
 
@@ -193,9 +195,18 @@ The core logic, architecture decisions, and feature implementation were designed
 - Memoized search results to prevent unnecessary re-renders
 - LocalStorage operations are debounced for better performance
 - React Flow handles large graphs efficiently with built-in virtualization
-  },
-  },
-  ])
+
+## Accessibility
+
+This project includes several accessibility features to ensure the skill tree is usable by everyone:
+
+- Keyboard navigation support throughout the application
+- ARIA attributes for screen reader compatibility
+- Focus management for interactive elements
+- High contrast mode support
+- Screen reader announcements for dynamic content changes
+
+For detailed information about accessibility features, implementation details, and testing protocols, please see the [Accessibility Documentation](./ACCESSIBILITY.md).
 
 ```
 
