@@ -3,7 +3,6 @@ import type { SkillData } from '../../types/skill.types';
 import './SkillNode.css';
 
 interface SkillNodeData extends SkillData {
-  data: SkillData;
   isHighlighted?: boolean;
   onToggleCompletion?: (skillId: string) => void;
   onDelete?: (skillId: string) => void;

@@ -57,9 +57,11 @@ describe('SkillNode Keyboard Interactions', () => {
     renderWithReactFlow(
       <SkillNode
         id="test-skill"
-        data={mockSkillData}
-        onDelete={mockOnDelete}
-        onToggleCompletion={mockOnToggleCompletion}
+        data={{
+          ...mockSkillData,
+          onDelete: mockOnDelete,
+          onToggleCompletion: mockOnToggleCompletion,
+        }}
         {...mockNodeProps}
       />
     );
@@ -81,9 +83,11 @@ describe('SkillNode Keyboard Interactions', () => {
     renderWithReactFlow(
       <SkillNode
         id="test-skill"
-        data={mockSkillData}
-        onDelete={mockOnDelete}
-        onToggleCompletion={mockOnToggleCompletion}
+        data={{
+          ...mockSkillData,
+          onDelete: mockOnDelete,
+          onToggleCompletion: mockOnToggleCompletion,
+        }}
         {...mockNodeProps}
       />
     );
@@ -105,9 +109,11 @@ describe('SkillNode Keyboard Interactions', () => {
     renderWithReactFlow(
       <SkillNode
         id="test-skill"
-        data={mockSkillData}
-        onDelete={mockOnDelete}
-        onToggleCompletion={mockOnToggleCompletion}
+        data={{
+          ...mockSkillData,
+          onDelete: mockOnDelete,
+          onToggleCompletion: mockOnToggleCompletion,
+        }}
         {...mockNodeProps}
       />
     );
@@ -129,9 +135,11 @@ describe('SkillNode Keyboard Interactions', () => {
     renderWithReactFlow(
       <SkillNode
         id="test-skill"
-        data={mockSkillData}
-        onDelete={mockOnDelete}
-        onToggleCompletion={mockOnToggleCompletion}
+        data={{
+          ...mockSkillData,
+          onDelete: mockOnDelete,
+          onToggleCompletion: mockOnToggleCompletion,
+        }}
         {...mockNodeProps}
       />
     );
@@ -153,9 +161,11 @@ describe('SkillNode Keyboard Interactions', () => {
     renderWithReactFlow(
       <SkillNode
         id="test-skill"
-        data={mockSkillData}
-        onDelete={mockOnDelete}
-        onToggleCompletion={mockOnToggleCompletion}
+        data={{
+          ...mockSkillData,
+          onDelete: mockOnDelete,
+          onToggleCompletion: mockOnToggleCompletion,
+        }}
         {...mockNodeProps}
       />
     );
@@ -179,9 +189,11 @@ describe('SkillNode Keyboard Interactions', () => {
     renderWithReactFlow(
       <SkillNode
         id="test-skill"
-        data={mockSkillData}
-        onDelete={mockOnDelete}
-        onToggleCompletion={mockOnToggleCompletion}
+        data={{
+          ...mockSkillData,
+          onDelete: mockOnDelete,
+          onToggleCompletion: mockOnToggleCompletion,
+        }}
         {...mockNodeProps}
       />
     );
@@ -204,19 +216,16 @@ describe('SkillNode Keyboard Interactions', () => {
 
   it('should not allow interaction with disabled toggle button', async () => {
     const user = userEvent.setup();
-
-    const lockedSkillData: SkillData = {
-      ...mockSkillData,
-      isUnlocked: false,
-      isCompleted: false,
-    };
-
     renderWithReactFlow(
       <SkillNode
         id="test-skill"
-        data={lockedSkillData}
-        onDelete={mockOnDelete}
-        onToggleCompletion={mockOnToggleCompletion}
+        data={{
+          ...mockSkillData,
+          isUnlocked: false,
+          isCompleted: false,
+          onDelete: mockOnDelete,
+          onToggleCompletion: mockOnToggleCompletion,
+        }}
         {...mockNodeProps}
       />
     );
@@ -238,18 +247,16 @@ describe('SkillNode Keyboard Interactions', () => {
   it('should handle completed skill state correctly', async () => {
     const user = userEvent.setup();
 
-    const completedSkillData: SkillData = {
-      ...mockSkillData,
-      isCompleted: true,
-      isUnlocked: true,
-    };
-
     renderWithReactFlow(
       <SkillNode
         id="test-skill"
-        data={completedSkillData}
-        onDelete={mockOnDelete}
-        onToggleCompletion={mockOnToggleCompletion}
+        data={{
+          ...mockSkillData,
+          isCompleted: true,
+          isUnlocked: true,
+          onDelete: mockOnDelete,
+          onToggleCompletion: mockOnToggleCompletion,
+        }}
         {...mockNodeProps}
       />
     );
@@ -273,9 +280,11 @@ describe('SkillNode Keyboard Interactions', () => {
       <div onClick={mockContainerClick}>
         <SkillNode
           id="test-skill"
-          data={mockSkillData}
-          onDelete={mockOnDelete}
-          onToggleCompletion={mockOnToggleCompletion}
+          data={{
+            ...mockSkillData,
+            onDelete: mockOnDelete,
+            onToggleCompletion: mockOnToggleCompletion,
+          }}
           {...mockNodeProps}
         />
       </div>
@@ -300,7 +309,9 @@ describe('SkillNode Keyboard Interactions', () => {
     renderWithReactFlow(
       <SkillNode
         id="test-skill"
-        data={mockSkillData}
+        data={{
+          ...mockSkillData,
+        }}
         // Not providing onDelete and onToggleCompletion handlers
         {...mockNodeProps}
       />
