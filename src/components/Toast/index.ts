@@ -1,3 +1,3 @@
 export { ToastProvider } from './Toast';
-export { useToast } from './useToast';
+export { useToast } from '../../hooks/useToast';
 export type { ToastType } from './ToastContext';

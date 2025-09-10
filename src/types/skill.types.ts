@@ -6,7 +6,6 @@ export interface SkillData extends Record<string, unknown> {
   id: string;
   name: string;
   description: string;
-  cost?: number;
   level?: SkillLevel;
   isUnlocked: boolean;
   isCompleted: boolean;
@@ -28,6 +27,5 @@ export interface SkillTreeState {
 export interface AddSkillFormData {
   name: string;
   description: string;
-  cost?: number;
   level?: SkillLevel;
 }

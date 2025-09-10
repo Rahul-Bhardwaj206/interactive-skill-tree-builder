@@ -16,7 +16,7 @@ export const SkillNode: React.FC<SkillNodeProps> = ({
   onToggleCompletion,
   onDelete,
 }) => {
-  const { cost, description, isCompleted, isUnlocked, level, name } = data;
+  const { description, isCompleted, isUnlocked, level, name } = data;
   const handleToggleCompletion = () => {
     onToggleCompletion?.(id);
   };
@@ -95,24 +95,14 @@ export const SkillNode: React.FC<SkillNodeProps> = ({
       <p id={`skill-description=${id}`} className="skill-node-description">
         {description}
       </p>
-      {(cost || level) && (
+      {level && (
         <div className="skill-node-meta" aria-label="Skill requirements">
-          {cost && (
-            <span
-              className="skill-node-cost"
-              aria-label={`Cost: ${cost} points`}
-            >
-              Cost: {cost}
-            </span>
-          )}
-          {level && (
-            <span
-              className="skill-node-level"
-              aria-label={`Required Level: ${level}`}
-            >
-              Level: {level}
-            </span>
-          )}
+          <span
+            className="skill-node-level"
+            aria-label={`Required Level: ${level}`}
+          >
+            Level: {level}
+          </span>
         </div>
       )}
       <div className="skill-node-status" role="status" aria-live="polite">

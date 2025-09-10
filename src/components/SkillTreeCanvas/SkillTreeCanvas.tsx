@@ -122,7 +122,7 @@ export const SkillTreeCanvas: React.FC<SkillTreeCanvasProps> = ({
             nodeStrokeWidth={1}
             zoomable
             pannable
-            position="top-left"
+            position="top-right"
           />
         </ReactFlow>
 
@@ -138,8 +138,8 @@ export const SkillTreeCanvas: React.FC<SkillTreeCanvasProps> = ({
                 <strong>Getting Started:</strong>
                 <ul>
                   <li>
-                    Use the <strong>"Load Sample"</strong> button to quickly
-                    start with a pre-build skill tree
+                    Use the <strong>"Try Demo"</strong> button to quickly start
+                    with a pre-build skill tree
                   </li>
                   <li>
                     Or add your own skills using the{' '}

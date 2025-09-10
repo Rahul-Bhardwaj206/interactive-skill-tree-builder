@@ -19,7 +19,6 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
   const [formData, setFormData] = useState<AddSkillFormData>({
     name: '',
     description: '',
-    cost: undefined,
     level: undefined,
   });
 
@@ -29,7 +28,6 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
     setFormData({
       name: '',
       description: '',
-      cost: undefined,
       level: undefined,
     });
     onClose();
@@ -71,7 +69,6 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
 
     const getFieldValue = () => {
       if (value === '') return undefined;
-      if (name === 'cost') return Number(value);
       return value;
     };
 
@@ -162,23 +159,6 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
 
           <fieldset className="form-row">
             <legend className="sr-only">Optional skill properties</legend>
-            <div className="form-group">
-              <label htmlFor="cost">Cost (Optional)</label>
-              <input
-                type="number"
-                id="cost"
-                name="cost"
-                value={formData.cost || ''}
-                onChange={handleInputChange}
-                placeholder="0"
-                min="0"
-                aria-describedby="cost-help"
-              />
-              <div id="cost-help" className="sr-only">
-                Optional: Enter the point cost for this skill
-              </div>
-            </div>
-
             <div className="form-group">
               <label htmlFor="level">Level (Optional)</label>
               <select

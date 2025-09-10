@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ToastContext } from './ToastContext';
+import { ToastContext } from '../components/Toast/ToastContext';
 
 // Custom hook for using toast
 export const useToast = (): {

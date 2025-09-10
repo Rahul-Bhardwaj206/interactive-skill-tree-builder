@@ -62,12 +62,11 @@
 
 .modal-close:focus,
 .modal-close:focus-visible {
-  outline: 2px solid #3B82F6;
+  outline: 2px solid #3b82f6;
   outline-offset: 2px;
-  background: #F3F4F6;
+  background: #f3f4f6;
   color: #374151;
 }
-
 
 .add-skill-form {
   padding: 0 24px 24px 24px;
@@ -128,8 +127,6 @@
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
 }
 
 .form-actions {
@@ -180,24 +177,23 @@
 /* Focus indicators for buttons */
 .btn-cancel:focus,
 .btn-cancel:focus-visible {
-  outline: 2px solid #3B82F6;
+  outline: 2px solid #3b82f6;
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
 .btn-submit:focus,
 .btn-submit:focus-visible {
-  outline: 2px solid #1D4ED8;
+  outline: 2px solid #1d4ed8;
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.2);
 }
 
 .btn-submit:disabled:focus {
-  outline: 2px solid #6B7280;
+  outline: 2px solid #6b7280;
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(107, 114, 128, 0.1);
 }
-
 
 @media (max-width: 640px) {
   .modal-content {

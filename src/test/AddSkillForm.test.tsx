@@ -41,7 +41,6 @@ describe('AddSkillForm', () => {
 
       expect(screen.getByLabelText(/skill name/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/cost/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/level/i)).toBeInTheDocument();
     });
 
@@ -115,18 +114,15 @@ describe('AddSkillForm', () => {
 
       const nameInput = screen.getByLabelText(/skill name/i);
       const descriptionInput = screen.getByLabelText(/description/i);
-      const costInput = screen.getByLabelText(/cost/i);
       const submitButton = screen.getByRole('button', { name: /add skill/i });
 
       await user.type(nameInput, 'React Hooks');
       await user.type(descriptionInput, 'Learn React Hooks patterns');
-      fireEvent.change(costInput, { target: { value: '10' } });
       await user.click(submitButton);
 
       expect(mockOnAddSkill).toHaveBeenCalledWith({
         name: 'React Hooks',
         description: 'Learn React Hooks patterns',
-        cost: 10,
         level: undefined,
       });
     });
@@ -146,7 +142,6 @@ describe('AddSkillForm', () => {
       expect(mockOnAddSkill).toHaveBeenCalledWith({
         name: 'React Hooks',
         description: 'Learn React Hooks patterns',
-        cost: undefined,
         level: undefined,
       });
     });
@@ -166,7 +161,6 @@ describe('AddSkillForm', () => {
       expect(mockOnAddSkill).toHaveBeenCalledWith({
         name: 'Basic Skill',
         description: 'A simple skill',
-        cost: undefined,
         level: undefined,
       });
     });
@@ -292,39 +286,6 @@ describe('AddSkillForm', () => {
     });
   });
 
-  describe('Number Input Handling', () => {
-    it('should handle cost input as number', async () => {
-      const user = userEvent.setup();
-      render(<AddSkillForm {...defaultProps} />);
-
-      const costInput = screen.getByLabelText(/cost/i);
-
-      await user.type(costInput, '25');
-      expect(costInput).toHaveValue(25);
-    });
-
-    it('should handle level input as number', () => {
-      render(<AddSkillForm {...defaultProps} />);
-
-      const levelInput = screen.getByLabelText(/level/i);
-      fireEvent.change(levelInput, { target: { value: 'Beginner' } });
-      expect(levelInput).toHaveValue('Beginner');
-    });
-
-    it('should clear number fields to undefined when emptied', async () => {
-      const user = userEvent.setup();
-      render(<AddSkillForm {...defaultProps} />);
-
-      const costInput = screen.getByLabelText(/cost/i);
-
-      await user.type(costInput, '25');
-      await user.clear(costInput);
-
-      // Value should be empty string in input
-      expect(costInput).toHaveValue(null);
-    });
-  });
-
   describe('Accessibility', () => {
     it('should have proper ARIA attributes', () => {
       render(<AddSkillForm {...defaultProps} />);
@@ -384,14 +345,6 @@ describe('AddSkillForm', () => {
       expect(descriptionInput).toHaveValue(longText);
     });
 
-    it('should handle negative numbers in cost and level', () => {
-      render(<AddSkillForm {...defaultProps} />);
-      const costInput = screen.getByLabelText('Cost (Optional)');
-
-      // HTML min attributes should prevent negative values
-      expect(costInput).toHaveAttribute('min', '0');
-    });
-
     it('should handle special characters in text fields', async () => {
       render(<AddSkillForm {...defaultProps} />);
 
@@ -409,7 +362,6 @@ describe('AddSkillForm', () => {
       expect(mockOnAddSkill).toHaveBeenCalledWith({
         name: specialName,
         description: specialDesc,
-        cost: undefined,
         level: undefined,
       });
     });

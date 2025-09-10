@@ -23,7 +23,7 @@ import {
 } from '../utils/skillTree.utils';
 import { createSampleSkillTree } from '../utils/sampleData.utils';
 import { generateId } from '../utils/id.utils';
-import { useToast } from '../components/Toast/useToast';
+import { useToast } from './useToast';
 
 const INITIAL_NODES: SkillNode[] = [];
 const INITIAL_EDGES: SkillEdge[] = [];
@@ -81,7 +81,6 @@ export const useSkillTree = () => {
           id: generateId(),
           name: skillData.name,
           description: skillData.description,
-          cost: skillData.cost,
           level: skillData.level,
           isUnlocked: true, // New skills start unlocked if no prerequisites
           isCompleted: false,

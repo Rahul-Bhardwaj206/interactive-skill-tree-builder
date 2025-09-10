@@ -12,7 +12,7 @@ A React-based interactive skill tree builder that allows users to create, manage
   - Automatic layout with node fitting
 
 - 🔄 Skill Management
-  - Add new skills with name, description, cost, and level
+  - Add new skills with name, description, and level
   - Set skill prerequisites through node connections
   - Mark skills as completed or incomplete
   - Delete skills with proper cleanup
@@ -91,7 +91,7 @@ The application will be available at `http://localhost:5173`
 
 ### Getting Started
 
-1. For a quick start, use the "Load Sample" button when the canvas is empty
+1. For a quick start, use the "Try Demo" button when the canvas is empty
 2. This will create a pre-arranged skill tree with a web development learning path
 3. Explore the tree to understand how prerequisite and completion work
 
@@ -99,7 +99,7 @@ The application will be available at `http://localhost:5173`
 
 1. Click the "Add Skill" button in the toolbar
 2. Fill in the skill name and description (required)
-3. Optionally add cost and level values
+3. Optionally add level values
 4. Click "Add Skill" to create the node
 
 ### Creating Prerequisites
