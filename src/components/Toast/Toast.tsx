@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { ToastContext, type Toast, type ToastType } from './ToastContext';
 import './Toast.css';
 
@@ -7,10 +7,11 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const toastIdCounter = useRef(0);
 
   // Function to add a toast
   const showToast = useCallback((message: string, type: ToastType) => {
-    const id = Date.now().toString(); // Simple ID generation using timestamp
+    const id = `toast-${Date.now()}-${++toastIdCounter.current}`; // Unique ID
     const newToast = { id, message, type };
     setToasts((prevToasts) => [...prevToasts, newToast]);
 
