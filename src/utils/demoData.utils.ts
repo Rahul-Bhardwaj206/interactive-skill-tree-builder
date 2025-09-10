@@ -1,7 +1,7 @@
 import type { SkillNode, SkillEdge } from '../types/skill.types';
 import { generateId } from './id.utils';
 
-export const createSampleSkillTree = (): {
+export const createDemoSkillTree = (): {
   nodes: SkillNode[];
   edges: SkillEdge[];
 } => {
@@ -20,7 +20,7 @@ export const createSampleSkillTree = (): {
   // Define the spacing between nodes
   const verticalSpacing = 150;
 
-  // Create sample nodes
+  // Create nodes
   const nodes: SkillNode[] = [
     {
       id: nodeIds.webFundamentals,
@@ -120,7 +120,7 @@ export const createSampleSkillTree = (): {
     },
   ];
 
-  // Create sample edges (prerequisites)
+  // Create edges (prerequisites)
   const edges: SkillEdge[] = [
     {
       id: generateId(),

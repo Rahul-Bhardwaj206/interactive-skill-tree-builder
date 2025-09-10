@@ -21,7 +21,7 @@ import {
   updateSkillUnlockStatus,
   wouldCreateCycle,
 } from '../utils/skillTree.utils';
-import { createSampleSkillTree } from '../utils/sampleData.utils';
+import { createDemoSkillTree } from '../utils/demoData.utils';
 import { generateId } from '../utils/id.utils';
 import { useToast } from './useToast';
 
@@ -256,7 +256,7 @@ export const useSkillTree = () => {
 
   // Load sample skill tree
   const loadSampleSkillTree = useCallback(() => {
-    const { nodes: sampleNodes, edges: sampleEdges } = createSampleSkillTree();
+    const { nodes: sampleNodes, edges: sampleEdges } = createDemoSkillTree();
     const unlockedNodes = updateSkillUnlockStatus(sampleNodes, sampleEdges);
 
     setNodes(unlockedNodes);

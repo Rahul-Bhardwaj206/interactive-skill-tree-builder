@@ -130,12 +130,17 @@ src/
 │   ├── SearchBar/      # Search functionality
 │   ├── SkillNode/      # Custom node component
 │   ├── SkillTreeCanvas/# Main canvas with React Flow
+|   ├── Toast/          # Toast notification system
 │   └── Toolbar/        # App header and controls
 ├── hooks/              # Custom React hooks
+│   ├── useFocusManagement.ts  # Accessibility focus management
+│   ├── useKeyboardShortcuts.ts  # Keyboard navigation
 │   ├── useSkillSearch.ts  # Search functionality
 │   └── useSkillTree.ts    # Main state management
 ├── types/              # TypeScript type definitions
 ├── utils/              # Utility functions
+│   ├── id.utils.ts        # ID generation utilities
+│   ├── demoData.utils.ts  # Demo skill tree data
 │   ├── skillTree.utils.ts # Graph logic and validation
 │   └── storage.utils.ts   # localStorage operations
 └── test/               # Unit tests
