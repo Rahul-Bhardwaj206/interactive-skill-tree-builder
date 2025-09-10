@@ -143,6 +143,233 @@ describe('storage.utils', () => {
       );
 
       consoleSpy.mockRestore();
- });
-});
+    });
+  });
+  describe('localStorage edge cases', () => {
+    it('should handle localStorage being unavailable', () => {
+      const consoleSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      // Simulate localStorage throwing (e.g., in private browsing mode)
+      localStorageMock.setItem.mockImplementation(() => {
+        throw new Error('QuotaExceededError');
+      });
+
+      saveSkillTreeToStorage(mockSkillTreeState);
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Failed to save skill tree to localStorage:',
+        expect.any(Error)
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it('should handle localStorage quota exceeded', () => {
+      const consoleSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      localStorageMock.setItem.mockImplementation(() => {
+        const error = new Error('QuotaExceededError');
+        error.name = 'QuotaExceededError';
+        throw error;
+      });
+
+      saveSkillTreeToStorage(mockSkillTreeState);
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Failed to save skill tree to localStorage:',
+        expect.any(Error)
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it('should handle localStorage getItem throwing error', () => {
+      const consoleSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      localStorageMock.getItem.mockImplementation(() => {
+        throw new Error('SecurityError: localStorage access denied');
+      });
+
+      const result = loadSkillTreeFromStorage();
+
+      expect(result).toBeNull();
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Failed to load skill tree from localStorage:',
+        expect.any(Error)
+      );
+
+      consoleSpy.mockRestore();
+    });
+  });
+
+  describe('data integrity and validation', () => {
+    beforeEach(() => {
+      // Reset all mocks to their default behavior for this test suite
+      vi.clearAllMocks();
+      localStorageMock.setItem.mockImplementation(() => {});
+      localStorageMock.getItem.mockReturnValue(null);
+      localStorageMock.removeItem.mockImplementation(() => {});
+    });
+
+    it('should handle empty string from localStorage', () => {
+      localStorageMock.getItem.mockReturnValue('');
+
+      const result = loadSkillTreeFromStorage();
+
+      expect(result).toBeNull();
+    });
+
+    it('should handle whitespace-only string from localStorage', () => {
+      localStorageMock.getItem.mockReturnValue('   ');
+
+      const result = loadSkillTreeFromStorage();
+
+      expect(result).toBeNull();
+    });
+
+    it('should handle valid JSON but wrong structure', () => {
+      const consoleSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      // Valid JSON but not a skill tree state
+      localStorageMock.getItem.mockReturnValue('{"someOtherData": "value"}');
+
+      const result = loadSkillTreeFromStorage();
+
+      // Should still return the parsed object even if structure is wrong
+      // The validation would be handled at a higher level
+      expect(result).toEqual({ someOtherData: 'value' });
+
+      consoleSpy.mockRestore();
+    });
+
+    it('should handle large skill tree data', () => {
+      // Create a large skill tree state
+      const largeState: SkillTreeState = {
+        nodes: Array.from({ length: 100 }, (_, i) => ({
+          id: `node-${i}`,
+          type: 'default' as const,
+          position: { x: i * 10, y: i * 20 },
+          data: {
+            id: `node-${i}`,
+            name: `Skill ${i}`,
+            description: `This is a very long description for skill ${i} that contains a lot of text to test how the storage handles larger amounts of data without issues`,
+            isUnlocked: i < 50,
+            isCompleted: i < 25,
+            cost: i * 10,
+            level: undefined,
+          },
+        })),
+        edges: Array.from({ length: 50 }, (_, i) => ({
+          id: `edge-${i}`,
+          source: `node-${i}`,
+          target: `node-${i + 1}`,
+          type: 'default' as const,
+        })),
+      };
+
+      saveSkillTreeToStorage(largeState);
+
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'skillTreeState',
+        JSON.stringify(largeState)
+      );
+    });
+
+    it('should handle skill tree with special characters', () => {
+      const specialCharState: SkillTreeState = {
+        nodes: [
+          {
+            id: 'node-special',
+            type: 'default',
+            position: { x: 0, y: 0 },
+            data: {
+              id: 'node-special',
+              name: 'C++ & Node.js™',
+              description:
+                'Learn C++ and Node.js! :rocket: "Advanced" concepts (including UTF-8: 中文)',
+              isUnlocked: true,
+              isCompleted: false,
+            },
+          },
+        ],
+        edges: [],
+      };
+
+      saveSkillTreeToStorage(specialCharState);
+      localStorageMock.getItem.mockReturnValue(
+        JSON.stringify(specialCharState)
+      );
+
+      const result = loadSkillTreeFromStorage();
+
+      expect(result).toEqual(specialCharState);
+    });
+
+    it('should handle undefined and null values in data', () => {
+      const stateWithNulls: SkillTreeState = {
+        nodes: [
+          {
+            id: 'node-null',
+            type: 'default',
+            position: { x: 0, y: 0 },
+            data: {
+              id: 'node-null',
+              name: 'Test Skill',
+              description: 'Test description',
+              isUnlocked: true,
+              isCompleted: false,
+              cost: undefined,
+              level: undefined,
+            },
+          },
+        ],
+        edges: [],
+      };
+
+      saveSkillTreeToStorage(stateWithNulls);
+
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'skillTreeState',
+        JSON.stringify(stateWithNulls)
+      );
+    });
+  });
+
+  describe('backwards compatibility', () => {
+    it('should handle loading data saved in old format', () => {
+      // Simulate old format that might be missing some fields
+      const oldFormatData = {
+        nodes: [
+          {
+            id: 'old-node',
+            position: { x: 0, y: 0 },
+            data: {
+              id: 'old-node',
+              name: 'Old Skill',
+              description: 'Old format',
+              isUnlocked: true,
+              isCompleted: false,
+              // Missing type field that might be added later
+            },
+          },
+        ],
+        edges: [],
+        // Missing some new fields that might be added
+      };
+
+      localStorageMock.getItem.mockReturnValue(JSON.stringify(oldFormatData));
+
+      const result = loadSkillTreeFromStorage();
+
+      expect(result).toEqual(oldFormatData);
+    });
+  });
 });

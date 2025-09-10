@@ -4,10 +4,12 @@ import {
   Background,
   Controls,
   MiniMap,
+  MarkerType,
   type NodeTypes,
   type NodeChange,
   type EdgeChange,
   type Connection,
+  type DefaultEdgeOptions,
 } from '@xyflow/react';
 import { SkillNode } from '../SkillNode/SkillNode';
 import type {
@@ -15,6 +17,22 @@ import type {
   SkillEdge,
 } from '../../types/skill.types';
 import './SkillTreeCanvas.css';
+
+// Node types factory function
+const createNodeTypes = (
+  highlightedNodeIds: Set<string>,
+  onToggleCompletion: (skillId: string) => void,
+  onDeleteSkill: (skillId: string) => void
+): NodeTypes => ({
+  default: (props) => (
+    <SkillNode
+      {...props}
+      isHighlighted={highlightedNodeIds.has(props.id)}
+      onToggleCompletion={onToggleCompletion}
+      onDelete={onDeleteSkill}
+    />
+  ),
+});
 
 interface SkillTreeCanvasProps {
   id?: string;
@@ -28,6 +46,20 @@ interface SkillTreeCanvasProps {
   highlightedNodeIds: Set<string>;
 }
 
+// Default edge options
+const defaultEdgeOptions: DefaultEdgeOptions = {
+  animated: true,
+  style: {
+    stroke: '#6b7280',
+    strokeWidth: 1,
+  },
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+    width: 20,
+    height: 20,
+    strokeWidth: 1,
+  },
+};
 export const SkillTreeCanvas: React.FC<SkillTreeCanvasProps> = ({
   id,
   nodes,
@@ -39,18 +71,10 @@ export const SkillTreeCanvas: React.FC<SkillTreeCanvasProps> = ({
   onDeleteSkill,
   highlightedNodeIds,
 }) => {
-  // Custom node types
-  const nodeTypes: NodeTypes = useMemo(
-    () => ({
-      default: (props) => (
-        <SkillNode
-          {...props}
-          isHighlighted={highlightedNodeIds.has(props.id)}
-          onToggleCompletion={onToggleCompletion}
-          onDelete={onDeleteSkill}
-        />
-      ),
-    }),
+  // Create memoized node types using the factory
+  const nodeTypes = useMemo(
+    () =>
+      createNodeTypes(highlightedNodeIds, onToggleCompletion, onDeleteSkill),
     [highlightedNodeIds, onToggleCompletion, onDeleteSkill]
   );
 
@@ -82,8 +106,13 @@ export const SkillTreeCanvas: React.FC<SkillTreeCanvasProps> = ({
           onConnect={onConnect}
           nodeTypes={nodeTypes}
           defaultViewport={{ x: 0, y: 0, zoom: 0.75 }}
+          defaultEdgeOptions={defaultEdgeOptions}
           fitView
-          fitViewOptions={{ padding: 0.2 }}
+          fitViewOptions={{
+            padding: 0.2,
+            includeHiddenNodes: true,
+            minZoom: 0.5,
+          }}
           className="react-flow-canvas"
         >
           <Background />

@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
-interface KeyboardShortcutsProps {
+interface UseKeyboardShortcutsProp {
   onAddSkill: () => void;
   onClearAll: () => void;
+  onCloseModal?: () => void;
   skillCount: number;
 }
 
-export const KeyboardShortcuts: React.FC<KeyboardShortcutsProps> = ({
+export const useKeyboardShortcuts = ({
   onAddSkill,
   onClearAll,
+  onCloseModal,
   skillCount,
-}) => {
+}: UseKeyboardShortcutsProp) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Only handle keyboard shortcuts when not in an input/textarea/modal
@@ -22,9 +24,8 @@ export const KeyboardShortcuts: React.FC<KeyboardShortcutsProps> = ({
       ) {
         return;
       }
-
-      // Cmd/Ctrl + N: Add new skill
-      if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+      // Alt + N: Add new skill (avoid conflict with browser/new tab shortcuts)
+      if (e.altKey && e.key === 'n' && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
         onAddSkill();
       }
@@ -40,13 +41,18 @@ export const KeyboardShortcuts: React.FC<KeyboardShortcutsProps> = ({
         onClearAll();
       }
 
+      // Escape: Close modals or forms (if any are open)
+      if (e.key === 'Escape' && onCloseModal) {
+        e.preventDefault();
+        onCloseModal();
+      }
+
       // Show help with '?'
       if (e.key === '?' && !e.shiftKey) {
         e.preventDefault();
         showKeyboardHelp();
       }
     };
-
     const showKeyboardHelp = () => {
       const helpText = [
         'Keyboard Shortcuts:',
@@ -54,19 +60,12 @@ export const KeyboardShortcuts: React.FC<KeyboardShortcutsProps> = ({
         '• Cmd/Ctrl + Shift + Delete: Clear all skills',
         '• Tab: Navigate between elements',
         '• Enter/Space: Activate buttons',
-        '• Escape: Close dialogs',
+        '• Escape: Close dialogs or modals',
         '• ?: Show this help',
       ].join('\n');
-
       alert(helpText);
     };
-
     document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onAddSkill, onClearAll, skillCount]);
-
-  return null; // This component doesn't render anything
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onAddSkill, onClearAll, onCloseModal, skillCount]);
 };

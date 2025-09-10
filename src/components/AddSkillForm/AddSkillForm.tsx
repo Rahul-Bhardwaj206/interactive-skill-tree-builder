@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { AddSkillFormData, SkillLevel } from '../../types/skill.types';
 import { useFocusManagement } from '../../hooks/useFocusManagement';
 import './AddSkillForm.css';
@@ -25,6 +25,28 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
 
   const modalRef = useFocusManagement(isOpen);
 
+  const handleClose = useCallback(() => {
+    setFormData({
+      name: '',
+      description: '',
+      cost: undefined,
+      level: undefined,
+    });
+    onClose();
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        handleClose();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, handleClose]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -37,16 +59,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
       name: formData.name.trim(),
       description: formData.description.trim(),
     });
-
-    // Reset form
-    setFormData({
-      name: '',
-      description: '',
-      cost: undefined,
-      level: undefined,
-    });
-
-    onClose();
+    handleClose();
   };
 
   const handleInputChange = (
@@ -56,18 +69,15 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
   ) => {
     const { name, value } = e.target;
 
+    const getFieldValue = () => {
+      if (value === '') return undefined;
+      if (name === 'cost') return Number(value);
+      return value;
+    };
+
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        name === 'cost'
-          ? value === ''
-            ? undefined
-            : Number(value)
-          : name === 'level'
-            ? value === ''
-              ? undefined
-              : value
-            : value,
+      [name]: getFieldValue(),
     }));
   };
 
@@ -76,7 +86,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
   return (
     <div
       className="modal-overlay"
-      onClick={onClose}
+      onClick={handleClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
@@ -93,7 +103,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
           <button
             type="button"
             className="modal-close"
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Close dialog"
             title="Close"
           >
@@ -194,7 +204,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
           <div className="form-actions">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="btn-cancel"
               aria-describedby="cancel-help"
             >

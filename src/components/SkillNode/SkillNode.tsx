@@ -16,21 +16,29 @@ export const SkillNode: React.FC<SkillNodeProps> = ({
   onToggleCompletion,
   onDelete,
 }) => {
+  const { cost, description, isCompleted, isUnlocked, level, name } = data;
   const handleToggleCompletion = () => {
     onToggleCompletion?.(id);
   };
 
-  const handleDelete = (event: React.MouseEvent) => {
+  const handleDelete = (event: React.MouseEvent | React.KeyboardEvent) => {
     event.stopPropagation();
     onDelete?.(id);
+  };
+
+  const handleDeleteKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleDelete(event);
+    }
   };
 
   const getNodeClassName = () => {
     let className = 'skill-node';
 
-    if (data.isCompleted) {
+    if (isCompleted) {
       className += ' completed';
-    } else if (data.isUnlocked) {
+    } else if (isUnlocked) {
       className += ' unlocked';
     } else {
       className += ' locked';
@@ -43,14 +51,14 @@ export const SkillNode: React.FC<SkillNodeProps> = ({
     return className;
   };
 
-  const skillStatus = data.isCompleted
+  const skillStatus = isCompleted
     ? 'completed'
-    : data.isUnlocked
+    : isUnlocked
       ? 'available'
       : 'locked';
-  const skillStatusText = data.isCompleted
+  const skillStatusText = isCompleted
     ? 'Completed'
-    : data.isUnlocked
+    : isUnlocked
       ? 'Available to complete'
       : 'Locked - complete prerequisites first';
 
@@ -66,17 +74,18 @@ export const SkillNode: React.FC<SkillNodeProps> = ({
         type="target"
         position={Position.Top}
         className="skill-handle skill-handle-target"
-        aria-label={`Prerequisite connection point for ${data.name}`}
+        aria-label={`Prerequisite connection point for ${name}`}
       />
       <div className="skill-node-header">
         <h3 id={`skill-title-${id}`} className="skill-node-title">
-          {data.name}
+          {name}
         </h3>
         <button
           className="skill-node-delete"
           onClick={handleDelete}
-          aria-label={`Delete skill: ${data.name}`}
-          title={`Delete ${data.name}`}
+          onKeyDown={handleDeleteKeyDown}
+          aria-label={`Delete skill: ${name}`}
+          title={`Delete ${name}`}
         >
           <span aria-hidden="true">x</span>
           <span className="sr-only">Delete</span>
@@ -84,24 +93,24 @@ export const SkillNode: React.FC<SkillNodeProps> = ({
       </div>
 
       <p id={`skill-description=${id}`} className="skill-node-description">
-        {data.description}
+        {description}
       </p>
-      {(data.cost || data.level) && (
+      {(cost || level) && (
         <div className="skill-node-meta" aria-label="Skill requirements">
-          {data.cost && (
+          {cost && (
             <span
               className="skill-node-cost"
-              aria-label={`Cost: ${data.cost} points`}
+              aria-label={`Cost: ${cost} points`}
             >
-              Cost: {data.cost}
+              Cost: {cost}
             </span>
           )}
-          {data.level && (
+          {level && (
             <span
               className="skill-node-level"
-              aria-label={`Required Level: ${data.level}`}
+              aria-label={`Required Level: ${level}`}
             >
-              Level: {data.level}
+              Level: {level}
             </span>
           )}
         </div>
@@ -113,11 +122,11 @@ export const SkillNode: React.FC<SkillNodeProps> = ({
           aria-label={skillStatusText}
         >
           <span aria-hidden="true">
-            {data.isCompleted
+            {isCompleted
               ? '✓ Completed'
-              : data.isUnlocked
+              : isUnlocked
                 ? '○ Available'
-                : ':lock: Locked'}
+                : '🔒 Locked'}
           </span>
           <span className="sr-only">{skillStatusText}</span>
         </span>
@@ -125,24 +134,24 @@ export const SkillNode: React.FC<SkillNodeProps> = ({
         <button
           className="skill-node-toggle"
           onClick={handleToggleCompletion}
-          disabled={!data.isUnlocked && !data.isCompleted}
+          disabled={!isUnlocked && !isCompleted}
           aria-describedby={`skill-status-${id}`}
           title={
-            data.isCompleted
-              ? `Mark ${data.name} as incomplete`
-              : data.isUnlocked
-                ? `Mark ${data.name} as complete`
+            isCompleted
+              ? `Mark ${name} as incomplete`
+              : isUnlocked
+                ? `Mark ${name} as complete`
                 : 'Complete prerequisites to unlock this skill'
           }
         >
-          {data.isCompleted ? 'Mark Incomplete' : 'Complete Skill'}
+          {isCompleted ? 'Mark Incomplete' : 'Complete Skill'}
         </button>
 
         <Handle
           type="source"
           position={Position.Bottom}
           className="skill-handle skill-handle-source"
-          aria-label={`Connection point to set ${data.name} as prerequisite`}
+          aria-label={`Connection point to set ${name} as prerequisite`}
         />
       </div>
     </div>

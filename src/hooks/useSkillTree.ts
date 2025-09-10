@@ -99,7 +99,7 @@ export const useSkillTree = () => {
   const toggleSkillCompletion = useCallback(
     (skillId: string) => {
       setNodes((prevNodes) => {
-        const updatedNodes = prevNodes.map((node) => {
+        let updatedNodes = prevNodes.map((node) => {
           if (node.id === skillId) {
             const canComplete = node.data.isUnlocked;
             if (!canComplete && !node.data.isCompleted) {
@@ -122,6 +122,34 @@ export const useSkillTree = () => {
           }
           return node;
         });
+
+        // If a skill was marked incomplete, also mark dependent skills incomplete
+        const toggleNode = updatedNodes.find((node) => node.id === skillId);
+        if (toggleNode && !toggleNode.data.isCompleted) {
+          const dependentSkillIds = edges
+            .filter((edge) => edge.source === skillId)
+            .map((edge) => edge.target);
+          if (dependentSkillIds.length > 0) {
+            updatedNodes = updatedNodes.map((node) => {
+              if (
+                dependentSkillIds.includes(node.id) &&
+                node.data.isCompleted
+              ) {
+                toast(
+                  `${node.data.name} has been reset because a prerequisite was marked as incomplete.`
+                );
+                return {
+                  ...node,
+                  data: {
+                    ...node.data,
+                    isCompleted: false,
+                  },
+                };
+              }
+              return node;
+            });
+          }
+        }
 
         // Update unlock status for all nodes
         return updateSkillUnlockStatus(updatedNodes, edges);

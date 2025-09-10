@@ -5,12 +5,12 @@ import '@xyflow/react/dist/style.css';
 import { useSkillTree } from './hooks/useSkillTree';
 import { useSkillSearch } from './hooks/useSkillSearch';
 import { SkipLinks } from './components/SkipLinks/SkipLinks';
-import { KeyboardShortcuts } from './components/KeyboardShortcuts/KeyboardShortcuts';
 import { Toolbar } from './components/Toolbar/Toolbar';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { AddSkillForm } from './components/AddSkillForm/AddSkillForm';
 import { SkillTreeCanvas } from './components/SkillTreeCanvas/SkillTreeCanvas';
 import './App.css';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 
 function App() {
   const [isAddSkillFormOpen, setIsAddSkillFormOpen] = useState(false);
@@ -30,6 +30,20 @@ function App() {
 
   const { searchTerm, setSearchTerm, filteredNodes, highlightedNodeIds } =
     useSkillSearch(nodes);
+
+  useKeyboardShortcuts({
+    onAddSkill: () => setIsAddSkillFormOpen(true),
+    onClearAll: () => {
+      if (
+        window.confirm(
+          'Are you sure you want to clear all skills? This action cannot be undone.'
+        )
+      ) {
+        clearSkillTree();
+      }
+    },
+    skillCount: nodes.length,
+  });
 
   const handleAddSkillClick = () => {
     setIsAddSkillFormOpen(true);
@@ -62,11 +76,6 @@ function App() {
   return (
     <div className="app">
       <SkipLinks />
-      <KeyboardShortcuts
-        onAddSkill={handleAddSkillClick}
-        onClearAll={handleClearAll}
-        skillCount={nodes.length}
-      />
 
       <div className="app-container">
         <Toolbar

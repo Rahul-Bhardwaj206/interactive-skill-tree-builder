@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './SearchBar.css';
 
 interface SearchBarProps {
@@ -16,9 +16,24 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   resultsCount,
   totalCount,
 }) => {
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
   const handleClear = () => {
     onSearchChange('');
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check for Ctrl/Cmd + K
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const searchId = 'skill-search-input';
   const resultsId = 'search-results-info';
@@ -33,9 +48,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           🔎
         </div>
         <input
+          ref={searchInputRef}
           id={searchId}
           type="text"
-          placeholder="Search skills by name or description..."
+          placeholder="Type skill name or description to search (⌘K / Ctrl+K)"
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
           className="search-input"

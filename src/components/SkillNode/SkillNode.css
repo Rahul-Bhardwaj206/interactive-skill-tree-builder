@@ -58,13 +58,13 @@
   background: none;
   border: none;
   color: #9ca3af;
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
   padding: 0;
   width: 20px;
-  height: 20px;
+  height: 24px;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   border-radius: 4px;
   transition: all 0.15s ease;
@@ -160,14 +160,14 @@
 }
 
 .skill-handle {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   background: #6b7280;
   border: 2px solid white;
 }
 
 .skill-handle-target {
-  top: -6px;
+  top: -5px;
 }
 
 .skill-handle-source {

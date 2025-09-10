@@ -65,55 +65,137 @@ npm install
 ```bash
 npm run dev
 ```
+The application will be available at `http://localhost:5173`
 
-## Usage
+4. Run tests
 
-### Creating Skills
+```bash
+  # Run tests once
+  npm run test
 
-1. Click the "Add Skill" button to open the form
-2. Fill in the required fields:
-   - Name: The skill title
-   - Description: Detailed information about the skill
-   - Level (Optional): Choose from Beginner, Intermediate, or Advanced
-   - Cost (Optional): Point cost to acquire the skill
+  # Run tests in watch mode
+  npm run test:ui
 
-### Managing the Skill Tree
+  # Run tests with coverage
+  npm run test:coverage
+```
 
-- **Arrange Skills**: Drag nodes to position them
-- **Create Prerequisites**: Drag from one node's bottom handle to another node's top handle
-- **Complete Skills**: Click "Complete Skill" on unlocked skills
-- **Remove Skills**: Click the "X" button on any skill node
-- **Navigate**:
-  - Use mouse wheel or Controls panel to zoom
-  - Drag empty space to pan
-  - Use Minimap for quick navigation
-  - Initial view is zoomed out for better overview
+5. Build the application
+```bash
+  npm run build
+```
 
-### Searching Skills
+## Usage Guide
 
-1. Use the search bar to filter skills
-2. Search works across skill names and descriptions
-3. Matching skills will be highlighted
-4. Clear search using the "X" button
+### Adding Skills
 
-## Contributing
+1. Click the "Add Skill" button in the toolbar
+2. Fill in the skill name and description (required)
+3. Optionally add cost and level values
+4. Click "Add Skill" to create the node
 
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+### Creating Prerequisites
 
-### Development Guidelines
+1. Drag from the bottom handle (circle) of a prerequisite skill
+2. Drop onto the top handle of the target skill
+3. The system will prevent circular dependencies and show feedback
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### Completing Skills
 
-Please make sure to:
+1. Skills with no prerequisites start as "Available"
+2. Click the "Complete Skill" button on available skills
+3. Dependent skills become available as their prerequisites are completed
 
-- Update documentation as needed
-- Add or update tests as appropriate
-- Follow the existing code style
-- Run the test suite before submitting
+### Search and Navigation
+
+1. Use the search bar to find skills by name or description
+2. Matching skills are highlighted in orange
+3. Use the minimap and controls for easier navigation
+
+## Project Structure
+
+
+src/
+├── components/          # React components
+│   ├── AddSkillForm/   # Modal form for adding skills
+│   ├── SearchBar/      # Search functionality
+│   ├── SkillNode/      # Custom node component
+│   ├── SkillTreeCanvas/# Main canvas with React Flow
+│   └── Toolbar/        # App header and controls
+├── hooks/              # Custom React hooks
+│   ├── useSkillSearch.ts  # Search functionality
+│   └── useSkillTree.ts    # Main state management
+├── types/              # TypeScript type definitions
+├── utils/              # Utility functions
+│   ├── skillTree.utils.ts # Graph logic and validation
+│   └── storage.utils.ts   # localStorage operations
+└── test/               # Unit tests
+
+
+## Architecture Decisions
+
+### State Management
+
+- Uses React hooks (useState, useEffect) for simple state management
+- Custom hooks encapsulate complex logic and provide clean APIs
+- localStorage integration for automatic persistence
+
+### Graph Visualization
+
+- React Flow provides robust node/edge management
+- Custom node components for skill-specific UI
+- Built-in pan, zoom, and minimap functionality
+
+### Cycle Detection
+
+- Depth-First Search (DFS) algorithm to detect circular dependencies
+- Prevents invalid connections with user feedback
+- Maintains graph integrity
+
+### Type Safety
+
+- Comprehensive TypeScript types for all data structures
+- Strict type checking enabled
+- Proper interfaces for component props
+
+## Testing Strategy
+
+- *Unit Tests*: Core utility functions and hooks
+- *Component Tests*: UI behavior and user interactions
+- *Integration Tests*: End-to-end workflows
+- *Coverage*: Key business logic and user paths
+
+## Completed Bonuses
+
+1. *Cycle Prevention*: Implemented with DFS algorithm and user feedback
+2. *Search and Filter*: Real-time search with node highlighting
+
+## AI Tool Usage Disclosure
+
+This project was developed with assistance from GitHub Copilot, which helped with:
+
+- Code structure and TypeScript types
+- Testing setup and test cases
+- CSS styling and responsive design
+
+The core logic, architecture decisions, and feature implementation were designed and reviewed by the developer.
+
+## Browser Compatibility
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Performance Considerations
+
+- Efficient graph algorithms with O(V+E) complexity
+- Memoized search results to prevent unnecessary re-renders
+- LocalStorage operations are debounced for better performance
+- React Flow handles large graphs efficiently with built-in virtualization
+  },
+  },
+  ])
 
 ```
 
