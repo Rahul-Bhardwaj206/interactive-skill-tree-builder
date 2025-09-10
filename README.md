@@ -73,12 +73,6 @@ The application will be available at `http://localhost:5173`
 ```bash
   # Run tests once
   npm run test
-
-  # Run tests in watch mode
-  npm run test:ui
-
-  # Run tests with coverage
-  npm run test:coverage
 ```
 
 5. Build the application
