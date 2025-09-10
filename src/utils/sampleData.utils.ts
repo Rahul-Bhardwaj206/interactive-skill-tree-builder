@@ -1,5 +1,5 @@
 import type { SkillNode, SkillEdge } from '../types/skill.types';
-import { v4 as uuidv4 } from 'uuid';
+import { generateId } from './id.utils';
 
 export const createSampleSkillTree = (): {
   nodes: SkillNode[];
@@ -7,14 +7,14 @@ export const createSampleSkillTree = (): {
 } => {
   // Generate stable IDs to ensure edges connect properly
   const nodeIds = {
-    webFundamentals: uuidv4(),
-    htmlBasics: uuidv4(),
-    cssBasics: uuidv4(),
-    jsBasics: uuidv4(),
-    responsiveDesign: uuidv4(),
-    accessibility: uuidv4(),
-    jsIntermediate: uuidv4(),
-    frontendFrameworks: uuidv4(),
+    webFundamentals: generateId(),
+    htmlBasics: generateId(),
+    cssBasics: generateId(),
+    jsBasics: generateId(),
+    responsiveDesign: generateId(),
+    accessibility: generateId(),
+    jsIntermediate: generateId(),
+    frontendFrameworks: generateId(),
   };
 
   // Define the spacing between nodes
@@ -123,43 +123,43 @@ export const createSampleSkillTree = (): {
   // Create sample edges (prerequisites)
   const edges: SkillEdge[] = [
     {
-      id: uuidv4(),
+      id: generateId(),
       source: nodeIds.webFundamentals,
       target: nodeIds.htmlBasics,
       type: 'default',
     },
     {
-      id: uuidv4(),
+      id: generateId(),
       source: nodeIds.webFundamentals,
       target: nodeIds.cssBasics,
       type: 'default',
     },
     {
-      id: uuidv4(),
+      id: generateId(),
       source: nodeIds.webFundamentals,
       target: nodeIds.jsBasics,
       type: 'default',
     },
     {
-      id: uuidv4(),
+      id: generateId(),
       source: nodeIds.htmlBasics,
       target: nodeIds.accessibility,
       type: 'default',
     },
     {
-      id: uuidv4(),
+      id: generateId(),
       source: nodeIds.cssBasics,
       target: nodeIds.responsiveDesign,
       type: 'default',
     },
     {
-      id: uuidv4(),
+      id: generateId(),
       source: nodeIds.jsBasics,
       target: nodeIds.jsIntermediate,
       type: 'default',
     },
     {
-      id: uuidv4(),
+      id: generateId(),
       source: nodeIds.jsIntermediate,
       target: nodeIds.frontendFrameworks,
       type: 'default',

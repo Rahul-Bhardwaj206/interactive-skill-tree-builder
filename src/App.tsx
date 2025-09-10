@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Toaster } from 'react-hot-toast';
 import '@xyflow/react/dist/style.css';
 
 import { useSkillTree } from './hooks/useSkillTree';
@@ -11,6 +10,7 @@ import { AddSkillForm } from './components/AddSkillForm/AddSkillForm';
 import { SkillTreeCanvas } from './components/SkillTreeCanvas/SkillTreeCanvas';
 import './App.css';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
+import { ToastProvider } from './components/Toast/Toast';
 
 function App() {
   const [isAddSkillFormOpen, setIsAddSkillFormOpen] = useState(false);
@@ -107,22 +107,14 @@ function App() {
         onClose={handleCloseAddSkillForm}
         onAddSkill={addSkill}
       />
-
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#fff',
-            color: '#374151',
-            border: '1px solid #E5E7EB',
-            borderRadius: '8px',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-          },
-        }}
-      />
     </div>
   );
 }
 
-export default App;
+const AppWithToaster = () => (
+  <ToastProvider>
+    <App />
+  </ToastProvider>
+);
+
+export default AppWithToaster;

@@ -21,9 +21,9 @@ import {
   updateSkillUnlockStatus,
   wouldCreateCycle,
 } from '../utils/skillTree.utils';
-import { v4 as uuidv4 } from 'uuid';
-import toast from 'react-hot-toast';
 import { createSampleSkillTree } from '../utils/sampleData.utils';
+import { generateId } from '../utils/id.utils';
+import { useToast } from '../components/Toast/useToast';
 
 const INITIAL_NODES: SkillNode[] = [];
 const INITIAL_EDGES: SkillEdge[] = [];
@@ -32,6 +32,8 @@ export const useSkillTree = () => {
   const [nodes, setNodes] = useState<SkillNode[]>(INITIAL_NODES);
   const [edges, setEdges] = useState<SkillEdge[]>(INITIAL_EDGES);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const toast = useToast();
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
@@ -69,14 +71,14 @@ export const useSkillTree = () => {
   const addSkill = useCallback(
     (skillData: AddSkillFormData) => {
       const newNode: SkillNode = {
-        id: uuidv4(),
+        id: generateId(),
         type: 'default',
         position: {
           x: Math.random() * 400 + 200,
           y: Math.random() * 400 + 200,
         },
         data: {
-          id: uuidv4(),
+          id: generateId(),
           name: skillData.name,
           description: skillData.description,
           cost: skillData.cost,
@@ -93,7 +95,7 @@ export const useSkillTree = () => {
 
       toast.success(`Added skill: ${skillData.name}`);
     },
-    [setNodes, edges]
+    [setNodes, edges, toast]
   );
 
   // Toggle skill completion status
@@ -143,7 +145,7 @@ export const useSkillTree = () => {
           if (allDependentSkillIds.size > 0) {
             updatedNodes = updatedNodes.map((node) => {
               if (allDependentSkillIds.has(node.id) && node.data.isCompleted) {
-                toast(
+                toast.info(
                   `${node.data.name} has been reset because a prerequisite in its path was marked as incomplete.`
                 );
                 return {
@@ -163,7 +165,7 @@ export const useSkillTree = () => {
         return updateSkillUnlockStatus(updatedNodes, edges);
       });
     },
-    [setNodes, edges]
+    [setNodes, edges, toast]
   );
 
   // Handle new connections (prerequisites)
@@ -181,7 +183,7 @@ export const useSkillTree = () => {
 
       const newEdge = {
         ...params,
-        id: uuidv4(),
+        id: generateId(),
         type: 'default',
       } as SkillEdge;
 
@@ -198,7 +200,7 @@ export const useSkillTree = () => {
 
       toast.success('Prerequisite connection added!');
     },
-    [nodes, edges, setEdges, setNodes]
+    [nodes, edges, setEdges, setNodes, toast]
   );
 
   // Delete a skill node
@@ -243,7 +245,7 @@ export const useSkillTree = () => {
         )
       );
     },
-    [setNodes, setEdges, nodes, edges]
+    [setNodes, setEdges, nodes, edges, toast]
   );
 
   // Clear all data
@@ -251,7 +253,7 @@ export const useSkillTree = () => {
     setNodes([]);
     setEdges([]);
     toast.success('Skill tree cleared!');
-  }, [setNodes, setEdges]);
+  }, [setNodes, setEdges, toast]);
 
   // Load sample skill tree
   const loadSampleSkillTree = useCallback(() => {
@@ -261,7 +263,7 @@ export const useSkillTree = () => {
     setNodes(unlockedNodes);
     setEdges(sampleEdges);
     toast.success('Sample skill tree loaded!');
-  }, [setNodes, setEdges]);
+  }, [setNodes, setEdges, toast]);
 
   return {
     nodes,
