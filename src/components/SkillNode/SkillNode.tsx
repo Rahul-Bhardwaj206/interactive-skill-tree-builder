@@ -23,7 +23,10 @@ export const SkillNode: React.FC<SkillNodeProps> = ({
 
   const handleDelete = (event: React.MouseEvent | React.KeyboardEvent) => {
     event.stopPropagation();
-    onDelete?.(id);
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete the skill: ${name}? \n\nThis action cannot be undone.`
+    );
+    if (confirmDelete) onDelete?.(id);
   };
 
   const handleDeleteKeyDown = (event: React.KeyboardEvent) => {

@@ -59,9 +59,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               className="btn btn-secondary"
               aria-describedby="load-sample-help"
             >
-              <span aria-hidden="true">❓</span> Try Demo
+              <span aria-hidden="true">✅</span> Load Skill Tree
               <span id="load-sample-help" className="sr-only">
-                Load a demo skill tree to get started quickly
+                Load a skill tree to get started quickly
               </span>
             </button>
           )}

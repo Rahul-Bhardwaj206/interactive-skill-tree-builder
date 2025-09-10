@@ -5,6 +5,13 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { SkillNode } from '../components/SkillNode/SkillNode';
 import type { SkillData } from '../types/skill.types';
 
+// Mock window.confirm
+const mockConfirm = vi.fn();
+Object.defineProperty(window, 'confirm', {
+  value: mockConfirm,
+  writable: true,
+});
+
 describe('SkillNode Keyboard Interactions', () => {
   const mockOnDelete = vi.fn();
   const mockOnToggleCompletion = vi.fn();
@@ -36,6 +43,7 @@ describe('SkillNode Keyboard Interactions', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockConfirm.mockReturnValue(true);
   });
 
   // Helper function to wrap components with React Flow provider

@@ -91,7 +91,7 @@ The application will be available at `http://localhost:5173`
 
 ### Getting Started
 
-1. For a quick start, use the "Try Demo" button when the canvas is empty
+1. For a quick start, use the "Load Skill Tree" button when the canvas is empty
 2. This will create a pre-arranged skill tree with a web development learning path
 3. Explore the tree to understand how prerequisite and completion work
 
